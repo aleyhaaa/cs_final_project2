@@ -2,14 +2,14 @@
 
 create a book tracking application
 
-Requirements
-- GUI interface
-- Create/Read/Update/Delete a book
-- Store data in a database
-- Export report
-- Exception Handling
+- Requirements
+    - GUI interface
+    - Create/Read/Update/Delete a book
+    - Store data in a database
+    - Export report
+    - Exception Handling
 
-books
+- books
     - pid (primary id) - a unique number
     - title:str
     - author_id:int
@@ -18,7 +18,7 @@ books
     - isbn:str
 
 
-author
+- author
     - pid
     - first_name:str
     - last_name:str
