@@ -1,16 +1,20 @@
+import sqlite3 # Import SQLite3
+
 """
 This file will control all aspects of communicating with the SQLite3 database
 """
 
-# Initialize a database - SQLite3
+# CONSTANTS
+DATABASE_FILE = "books.sqlite3"
 
-def initialize_database():
-    """
-    Initialize database to store data
-    """
-    pass
+# Initialize a database - SQLite3
+con = sqlite3.connect(DATABASE_FILE)
+
+# Create a cursor
+cur = con.cursor()
 
 # Create book table
+
 def create_book_table():
     """
     This function will create a book table based off of the following
