@@ -1,5 +1,3 @@
-# Initialize a database - SQlite3
-
 # CRUD (Create, Read, Update, Delete)
 
 def create_book(title:str, isbn:str, author_id:int, read_book:bool=False, comment:str=None):
