@@ -2,6 +2,8 @@ import sqlite3 # Import SQLite3
 
 """
 This file will control all aspects of communicating with the SQLite3 database
+
+This python program will use the built in SQLite3 module
 """
 
 # CONSTANTS
@@ -21,21 +23,41 @@ def create_book_table():
 
     - books
         - pid (primary id) - a unique number
-        - title:str
-        - author_id:int
-        - read_book:bool
-        - comments:str
-        - isbn:str
-
+        - title:TEXT
+        - author_id:INTEGER
+        - read_book:BOOLEAN
+        - comments:TEXT
+        - isbn:TEXT
     """
-    pass
+    sql_statement = """
+    CREATE TABLE books(pid INTEGER NOT NULL PRIMARY KEY, 
+    tile TEXT, 
+    author_id INTEGER,
+    read_book BOOLEAN,
+    comment TEXT,
+    isbn TEXT
+    )
+    """
+    cur.execute(sql_statement)
+    return "Database 'books' table created"
+    
 # Create an author table
 def create_author_table():
     """
     This function will create an author table based off of the following 
     - author
         - pid
-        - first_name:str
-        - last_name:str
+        - first_name:TEXT
+        - last_name:TEXT
     """
-    pass
+    sql_statement = """
+    CREATE TABLE authors(pid INTEGER NOT NULL PRIMARY KEY, 
+    first_name TEXT,
+    last_name TEXT
+    )
+    """
+    cur.execute(sql_statement)
+    return "Database 'authors' table created"
+if __name__ == "__main__":
+    create_book_table()
+    create_author_table()
