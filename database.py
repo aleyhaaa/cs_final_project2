@@ -31,7 +31,7 @@ def create_book_table():
     """
     sql_statement = """
     CREATE TABLE books(pid INTEGER NOT NULL PRIMARY KEY, 
-    tile TEXT, 
+    title TEXT, 
     author_id INTEGER,
     read_book BOOLEAN,
     comment TEXT,
