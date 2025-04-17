@@ -29,15 +29,29 @@ def create_author(first_name:str, last_name:str):
 
 def read_book_record(isbn:str):
     """
+    TODO: figure out why all records are being shown
     Retrive data from the database
     """
-    pass
+    data = (isbn,)
+    sql_statement = """
+    SELECT * FROM books WHERE (isbn == ?)
+    """
+    object = cur.execute(sql_statement, data)
+    book = object.fetchone()
+    con.commit()
+    con.close()
+    return book
 
 def read_all_books():
     """
     Read all the books in the database
     """
-    pass
+    sql_statement = """
+    SELECT * FROM books
+    """
+    object = cur.execute(sql_statement)
+    data = object.fetchall()
+    return data 
 
 def update_book(isbn:str):
     """
@@ -49,7 +63,14 @@ def delete_book(isbn:str):
     """
     This function will delete a book based off of the ISBN
     """
-    pass
+    data = (isbn,)
+    sql_statement = """
+    DELETE FROM books WHERE isbn = ?
+    """
+    cur.execute(sql_statement, data) # excecutes SQL statement 
+    con.commit() # commit data to database
+    con.close() # close our connection
+    return f"Data with ISBN: {isbn} deleted"
 
 # Export all books in the database to CSV
 
@@ -60,5 +81,9 @@ def export_report():
     pass
 
 if __name__ == "__main__":
-    create_book(title='A great book', isbn=123456, author_id=1, comment='best book i have ever read!!')
-    create_author(first_name='Aleyha', last_name='A.')
+ # create_book(title='A great book', isbn="0123456", author_id=1, comment='best book i have ever read!!')
+ # create_book(title='Book 2', isbn="123456", author_id=1, comment='another book we read')
+ # create_author(first_name='Aleyha', last_name='A.')
+  # print(read_all_books())
+  #print(delete_book(isbn="123456"))
+  print(read_book_record(isbn = "5655"))
