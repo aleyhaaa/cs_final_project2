@@ -53,11 +53,38 @@ def read_all_books():
     data = object.fetchall()
     return data 
 
-def update_book(isbn:str):
+def update_book(pid:int, title:str=None, isbn:str=None, author_id:int=None, read_book:bool=None, comment:str=None):
     """
     Update fields in a book record
     """
-    pass
+    # this will be used to dynamically update data inside the database
+    updates = []
+    values = []
+
+    if title is not None:
+        updates.append("title = ?")
+        values.append(title)
+
+    if isbn is not None:
+        updates.append("isbn = ?")
+        values.append(isbn)
+    if author_id is not None:
+        updates.append("author_id = ?")
+        values.append(author_id)
+
+    if read_book is not None:
+        updates.append("read_book = ?")
+        values.append(read_book)
+
+    if comment is not None:
+        updates.append("comment = ?")
+        values.append(comment)
+
+    values.append(pid)
+
+    sql_statement = """
+    TODO
+    """
 
 def delete_book(isbn:str):
     """
