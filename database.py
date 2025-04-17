@@ -30,7 +30,7 @@ def create_book_table():
         - isbn:TEXT
     """
     sql_statement = """
-    CREATE TABLE books(pid INTEGER NOT NULL PRIMARY KEY, 
+    CREATE TABLE IF NOT EXISTS books(pid INTEGER NOT NULL PRIMARY KEY, 
     title TEXT, 
     author_id INTEGER,
     read_book BOOLEAN,
@@ -51,7 +51,7 @@ def create_author_table():
         - last_name:TEXT
     """
     sql_statement = """
-    CREATE TABLE authors(pid INTEGER NOT NULL PRIMARY KEY, 
+    CREATE TABLE IF NOT EXISTS authors(pid INTEGER NOT NULL PRIMARY KEY, 
     first_name TEXT,
     last_name TEXT
     )
