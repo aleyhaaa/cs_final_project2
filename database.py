@@ -35,7 +35,8 @@ def create_book_table():
     author_id INTEGER,
     read_book BOOLEAN,
     comment TEXT,
-    isbn TEXT
+    isbn TEXT,
+    FOREIGN KEY(author_id) REFRENCES author(pid)
     )
     """
     cur.execute(sql_statement)
@@ -45,7 +46,7 @@ def create_book_table():
 def create_author_table():
     """
     This function will create an author table based off of the following 
-    
+
     - author
         - pid
         - first_name:TEXT
@@ -59,6 +60,20 @@ def create_author_table():
     """
     cur.execute(sql_statement)
     return "Database 'authors' table created"
+
+def create_fake_data():
+    """
+    TODO: fix relational issues
+    generate initial fake data to insert in database
+    """
+    # create authors
+    cur.execute("INSERT INTO author (first_name), last_name) VALUES ('Aleyha', 'Author')")
+    cur.execute("INSERT INTO author (first_name), last_name) VALUES ('Michael', 'Author')")
+
+    # Create Books 
+    cur.execute("INSERT INTO books (title, comments, isbn) VALUES ('Book 1', 'interesting book', '12345')") 
+    cur.execute("INSERT INTO books (title, comments, isbn) VALUES ('Book 2', 'interesting book', '54321')") 
+
 if __name__ == "__main__":
     create_book_table()
     create_author_table()
