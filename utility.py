@@ -1,4 +1,5 @@
 from database import cur, con
+import csv
 
 # CRUD (Create, Read, Update, Delete)
 
@@ -101,11 +102,24 @@ def delete_book(isbn:str):
 
 # Export all books in the database to CSV
 
-def export_report():
+def export_report(filename:str):
     """
     This function will output database to a CSV file
     """
-    pass
+    # pull all data from database
+    # output of data to CSV
+    # return a file to user 
+    rows = read_all_books() # read all books in database
+    column_names = ["id", "title", "author_id", "read_book", "comments", "isbn"] # set column names for csv file 
+
+    # write CSV file
+    with open(f"{filename}.csv", "w", newline='') as csvfile:
+        csv_writer = csv.writer(csvfile) # use writer to create csv file
+        csv_writer.writerow(column_names) # write the column names on the first row
+        csv_writer.writerows(rows)
+    print(f'Report named: {filename}.csv was generated')
+
+    
 
 if __name__ == "__main__":
  # create_book(title='A great book', isbn="0123456", author_id=1, comment='best book i have ever read!!')
@@ -113,4 +127,6 @@ if __name__ == "__main__":
  # create_author(first_name='Aleyha', last_name='A.')
   # print(read_all_books())
   #print(delete_book(isbn="123456"))
-  print(read_book_record(isbn = "5655"))
+  #print(read_book_record(isbn = "5655"))
+ # export_report(filename='test')
+ export_report(filename='report 1')

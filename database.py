@@ -45,6 +45,7 @@ def create_book_table():
 def create_author_table():
     """
     This function will create an author table based off of the following 
+    
     - author
         - pid
         - first_name:TEXT

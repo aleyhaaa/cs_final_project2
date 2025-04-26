@@ -232,3 +232,6 @@ pyrightconfig.json
 
 # Exclude SQLite3 databases
 books.sqlite3
+
+# Exclude .csv reports
+*.csv
