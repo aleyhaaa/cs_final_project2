@@ -57,6 +57,7 @@ def read_all_books():
 def update_book(pid:int, title:str=None, isbn:str=None, author_id:int=None, read_book:bool=None, comment:str=None):
     """
     Update fields in a book record
+    TODO: sql_statement 
     """
     # this will be used to dynamically update data inside the database
     updates = []
@@ -84,7 +85,7 @@ def update_book(pid:int, title:str=None, isbn:str=None, author_id:int=None, read
     values.append(pid)
 
     sql_statement = """
-    TODO
+    
     """
 
 def delete_book(isbn:str):
