@@ -41,21 +41,21 @@ class HorizzontalView(QWidget):
 
 
         # create horizontal layout and add widgets
-        h_layout = QVBoxLayout()
-        h_layout.addWidget(self.book_title)
-        h_layout.addWidget(self.book_title_line)
-        h_layout.addWidget(self.author_title)
-        h_layout.addWidget(self.author_title_line)
-        h_layout.addWidget(self.isbn_title)
-        h_layout.addWidget(self.isbn_title_line)
-        h_layout.addWidget(self.read_book_title)
-        h_layout.addWidget(self.comment_title)
-        h_layout.addWidget(self.comment_title_line)
+        v_layout = QVBoxLayout()
+        v_layout.addWidget(self.book_title)
+        v_layout.addWidget(self.book_title_line)
+        v_layout.addWidget(self.author_title)
+        v_layout.addWidget(self.author_title_line)
+        v_layout.addWidget(self.isbn_title)
+        v_layout.addWidget(self.isbn_title_line)
+        v_layout.addWidget(self.read_book_title)
+        v_layout.addWidget(self.comment_title)
+        v_layout.addWidget(self.comment_title_line)
 
-        h_layout.addWidget(self.button)
+        v_layout.addWidget(self.button)
 
         # set main layout to the main window
-        self.setLayout(h_layout)
+        self.setLayout(v_layout)
     
     def show_text(self):
         """
