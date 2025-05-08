@@ -1,134 +1,122 @@
-from database import cur, con
-import csv
+# utility.py
+import sqlite3  # SQLite3 module for database management
 
-# CRUD (Create, Read, Update, Delete)
+# Database file name (SQLite database will be created in the same directory)
+DATABASE_FILE = "books.sqlite3"
 
-def create_book(title:str, isbn:str, author_id:int, read_book:bool=False, comment:str=None):
+def create_database():
     """
-    This function is used to create a record of a book
-    """
-    
-    data = (title, isbn, author_id, read_book, comment)
-    sql_statement = """
-    INSERT INTO books(title, isbn, author_id, read_book, comment) VALUES(?,?,?,?,?)
-    """
-    cur.execute(sql_statement, data)
-    con.commit()
-    return 'Data inserted into database'
+    Create the 'books' table in the SQLite database.
+    If the table already exists, it will not be recreated.
 
-def create_author(first_name:str, last_name:str):
+    Columns:
+    - id: Unique identifier for each book (Primary Key, Auto-incremented).
+    - title: The title of the book (Text).
+    - author: The author of the book (Text).
+    - isbn: The ISBN number of the book (Text).
+    - read_book: Boolean indicating if the book has been read (0 = No, 1 = Yes).
+    - comment: A text field for any user comments about the book.
     """
-    This will create a record for the author
-    """
-    data = (first_name, last_name)
-    sql_statement = """
-    INSERT INTO authors(first_name, last_name) VALUES(?,?)
-    """
-    cur.execute(sql_statement, data)
-    con.commit()
-    return 'Data inserted into database'
+    # Establish a connection to the SQLite database
+    with sqlite3.connect(DATABASE_FILE) as con:
+        cur = con.cursor()  # Create a cursor object for executing SQL commands
+        
+        # SQL command to create the books table (if it does not already exist)
+        cur.execute("""
+        CREATE TABLE IF NOT EXISTS books (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,  -- Unique book ID (auto-incremented)
+            title TEXT,                           -- Book title
+            author TEXT,                          -- Book author
+            isbn TEXT,                            -- Book ISBN number
+            read_book BOOLEAN,                    -- Read status (0 = No, 1 = Yes)
+            comment TEXT                          -- User comments about the book
+        )
+        """)
+        
+        # Commit the transaction (save changes)
+        con.commit()
 
-def read_book_record(isbn:str):
-    """
-    TODO: figure out why all records are being shown
-    Retrive data from the database
-    """
-    data = (isbn,)
-    sql_statement = """
-    SELECT * FROM books WHERE (isbn == ?)
-    """
-    object = cur.execute(sql_statement, data)
-    book = object.fetchone()
-    con.commit()
-    con.close()
-    return book
 
 def read_all_books():
     """
-    Read all the books in the database
+    Read all book records from the 'books' table.
+
+    Returns:
+    - A list of tuples, each representing a row in the 'books' table.
+    - Each tuple contains (id, title, author, isbn, read_book, comment).
     """
-    sql_statement = """
-    SELECT * FROM books
+    with sqlite3.connect(DATABASE_FILE) as con:
+        cur = con.cursor()  # Create a cursor object
+        
+        # SQL command to fetch all rows from the books table
+        cur.execute("SELECT * FROM books")
+        
+        # Fetch all results and return as a list of tuples
+        return cur.fetchall()
+
+
+def add_book(title, author, isbn, read_book, comment):
     """
-    object = cur.execute(sql_statement)
-    data = object.fetchall()
-    return data
+    Add a new book record to the 'books' table.
 
-def update_book(pid:int, title:str=None, isbn:str=None, author_id:int=None, read_book:bool=None, comment:str=None):
+    Parameters:
+    - title (str): The title of the book.
+    - author (str): The author of the book.
+    - isbn (str): The ISBN number of the book.
+    - read_book (bool): Whether the book has been read (True = Read, False = Not Read).
+    - comment (str): User comments about the book.
     """
-    Update fields in a book record
-    TODO: sql_statement 
+    with sqlite3.connect(DATABASE_FILE) as con:
+        cur = con.cursor()  # Create a cursor object
+        
+        # SQL command to insert a new book record
+        cur.execute("""
+        INSERT INTO books (title, author, isbn, read_book, comment)
+        VALUES (?, ?, ?, ?, ?)
+        """, (title, author, isbn, read_book, comment))
+        
+        # Commit the transaction (save changes)
+        con.commit()
+
+
+def update_book(book_id, title, author, isbn, read_book, comment):
     """
-    # this will be used to dynamically update data inside the database
-    updates = []
-    values = []
+    Update an existing book record in the 'books' table.
 
-    if title is not None:
-        updates.append("title = ?")
-        values.append(title)
-
-    if isbn is not None:
-        updates.append("isbn = ?")
-        values.append(isbn)
-    if author_id is not None:
-        updates.append("author_id = ?")
-        values.append(author_id)
-
-    if read_book is not None:
-        updates.append("read_book = ?")
-        values.append(read_book)
-
-    if comment is not None:
-        updates.append("comment = ?")
-        values.append(comment)
-
-    values.append(pid)
-
-    sql_statement = """
-    
+    Parameters:
+    - book_id (int): The unique ID of the book to update.
+    - title (str): The updated title of the book.
+    - author (str): The updated author of the book.
+    - isbn (str): The updated ISBN number of the book.
+    - read_book (bool): The updated read status (True = Read, False = Not Read).
+    - comment (str): The updated user comments about the book.
     """
+    with sqlite3.connect(DATABASE_FILE) as con:
+        cur = con.cursor()  # Create a cursor object
+        
+        # SQL command to update a book record
+        cur.execute("""
+        UPDATE books 
+        SET title = ?, author = ?, isbn = ?, read_book = ?, comment = ?
+        WHERE id = ?
+        """, (title, author, isbn, read_book, comment, book_id))
+        
+        # Commit the transaction (save changes)
+        con.commit()
 
-def delete_book(isbn:str):
+
+def delete_book(book_id):
     """
-    This function will delete a book based off of the ISBN
+    Delete a book record from the 'books' table.
+
+    Parameters:
+    - book_id (int): The unique ID of the book to delete.
     """
-    data = (isbn,)
-    sql_statement = """
-    DELETE FROM books WHERE isbn = ?
-    """
-    cur.execute(sql_statement, data) # excecutes SQL statement 
-    con.commit() # commit data to database
-    con.close() # close our connection
-    return f"Data with ISBN: {isbn} deleted"
-
-# Export all books in the database to CSV
-
-def export_report(filename:str):
-    """
-    This function will output database to a CSV file
-    """
-    # pull all data from database
-    # output of data to CSV
-    # return a file to user 
-    rows = read_all_books() # read all books in database
-    column_names = ["id", "title", "author_id", "read_book", "comments", "isbn"] # set column names for csv file 
-
-    # write CSV file
-    with open(f"{filename}.csv", "w", newline='') as csvfile:
-        csv_writer = csv.writer(csvfile) # use writer to create csv file
-        csv_writer.writerow(column_names) # write the column names on the first row
-        csv_writer.writerows(rows)
-    print(f'Report named: {filename}.csv was generated')
-
-    
-
-if __name__ == "__main__":
- # create_book(title='A great book', isbn="0123456", author_id=1, comment='best book i have ever read!!')
- # create_book(title='Book 2', isbn="123456", author_id=1, comment='another book we read')
- # create_author(first_name='Aleyha', last_name='A.')
-  # print(read_all_books())
-  #print(delete_book(isbn="123456"))
-  #print(read_book_record(isbn = "5655"))
- # export_report(filename='test')
- #export_report(filename='report 1')
- print(read_all_books())
+    with sqlite3.connect(DATABASE_FILE) as con:
+        cur = con.cursor()  # Create a cursor object
+        
+        # SQL command to delete a book record based on the book ID
+        cur.execute("DELETE FROM books WHERE id = ?", (book_id,))
+        
+        # Commit the transaction (save changes)
+        con.commit()
