@@ -32,11 +32,10 @@ def create_book_table():
     sql_statement = """
     CREATE TABLE IF NOT EXISTS books(pid INTEGER NOT NULL PRIMARY KEY, 
     title TEXT, 
-    author_id INTEGER,
+    author TEXT,
     read_book BOOLEAN,
     comment TEXT,
-    isbn TEXT,
-    FOREIGN KEY(author_id) REFRENCES author(pid)
+    isbn TEXT
     )
     """
     cur.execute(sql_statement)
@@ -67,13 +66,15 @@ def create_fake_data():
     generate initial fake data to insert in database
     """
     # create authors
-    cur.execute("INSERT INTO author (first_name), last_name) VALUES ('Aleyha', 'Author')")
-    cur.execute("INSERT INTO author (first_name), last_name) VALUES ('Michael', 'Author')")
+  #  cur.execute("INSERT INTO author (first_name, last_name) VALUES ('Aleyha' 'Author')")
+  #   cur.execute("INSERT INTO author (first_name, last_name) VALUES ('Michael', 'Author')")
 
     # Create Books 
-    cur.execute("INSERT INTO books (title, comments, isbn) VALUES ('Book 1', 'interesting book', '12345')") 
-    cur.execute("INSERT INTO books (title, comments, isbn) VALUES ('Book 2', 'interesting book', '54321')") 
+    cur.execute("INSERT INTO books (title, author, comment, isbn) VALUES ('Book 1', 'Aleyha', 'interesting book', '12345')") 
+    cur.execute("INSERT INTO books (title, author, comment, isbn) VALUES ('Book 2', 'Michael', 'interesting book', '54321')") 
+    con.commit() # commits info to database
 
 if __name__ == "__main__":
     create_book_table()
     create_author_table()
+    create_fake_data()

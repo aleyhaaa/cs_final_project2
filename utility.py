@@ -52,7 +52,7 @@ def read_all_books():
     """
     object = cur.execute(sql_statement)
     data = object.fetchall()
-    return data 
+    return data
 
 def update_book(pid:int, title:str=None, isbn:str=None, author_id:int=None, read_book:bool=None, comment:str=None):
     """
@@ -130,4 +130,5 @@ if __name__ == "__main__":
   #print(delete_book(isbn="123456"))
   #print(read_book_record(isbn = "5655"))
  # export_report(filename='test')
- export_report(filename='report 1')
+ #export_report(filename='report 1')
+ print(read_all_books())
